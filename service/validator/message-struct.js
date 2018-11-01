@@ -5,6 +5,4 @@ const MessageStruct = struct({
     body: 'string'
 })
 
-
-
 module.exports = MessageStruct;

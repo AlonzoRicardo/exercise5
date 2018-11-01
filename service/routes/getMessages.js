@@ -3,10 +3,11 @@ const router = express.Router();
 const Message = require('../models/MessageModel')
 
 router.get('/', (req, res) => {
-    
-    Message.find()
-    .then(response => res.send(response))
 
+    Message.find()
+        .sort('-date')
+        .limit(5)
+        .then(response => res.send(response))
 })
 
 module.exports = router;

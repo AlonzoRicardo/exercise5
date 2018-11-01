@@ -1,11 +1,34 @@
-Simple Client for Cesar Armada's API.
+Simple Client
+    Setup:
+        1. npm install
+        2. const messageClient = require('messageClient')
 
-    1. npm install
-    2. cd /docs
-    3. node client.js
+    Methods:
+        1. sendMessage(destination, body) // takes 2 arguments, both string types;
+        2. getMessages() // retreives all messages from db;
 
-Problems found:
+    Examples: 
+        1. send a message:
+            messageClient.sendMessage('hello', 'world');
+            //returns 'succesfull' or detailed error;
 
-    1. limit the use of special characters
-    2. communicate back to the client the ammount of key value pairs that the json is allowed to have
-    3. limit the amount of requests the client can make in a given time
+        2. get messages from db:
+            messageClient.getMessages();
+            //returns
+            <!-- [ { _id: '5bdac83fb3f535f1d6219c86',
+                    destination: 'la blyat',
+                    body: 'kkkkkkk',
+                    created_at: '2018-11-01T09:32:48.001Z',
+                    updated_at: '2018-11-01T09:32:48.001Z',
+                     __v: 0 },
+
+                    { _id: '5bdad6deedc6ad664610c85a',
+                    destination: 'hello',
+                    body: 'world',
+                    created_at: '2018-11-01T10:35:10.166Z',
+                    updated_at: '2018-11-01T10:35:10.166Z',
+                    __v: 0 } ] 
+            -->
+
+Test in swagger:
+    https://app.swaggerhub.com/apis-docs/rickalon/ricardoalonzo-api/1.0.0-oas3#/default/sendMessage

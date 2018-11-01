@@ -19,8 +19,8 @@ mongoose
 const app = express()
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  windowMs: 5 * 60 * 1000, // 15 minutes
+  max: 10 // limit each IP to 100 requests per windowMs
 });
 
 
@@ -34,7 +34,6 @@ const getMessages = require('./routes/getMessages');
 const postMessage = require('./routes/postMessage')
 app.use('/messages', getMessages);
 app.use('/message', postMessage)
-
 
 
 app.listen(9003)

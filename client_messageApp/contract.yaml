@@ -1,0 +1,57 @@
+openapi: 3.0.0
+info:
+  description: This is a test swagger for cabify's bootcamp - exercise 3
+  version: "1.0.0-oas3"
+  title: MessageApp API
+  contact:
+    email: alonzoricardo6@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /message:
+    post:
+      summary: sends a message
+      operationId: sendMessage
+      description: >-
+        sends message with a limit of 1mb size and only 10 posts will be
+        accepted every 5 minutes.
+      responses:
+        '201':
+          description: message succesfully sent
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/message'
+        description: message to add
+  /messages:
+    get:
+      summary: gets 10 messages
+      operationId: getMessage
+      description: retreives last 10 messages from the data base
+      responses:
+        '200':
+          description: last 10 messages retreived
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+servers:
+  - url: 'https://virtserver.swaggerhub.com/rickalon/ricardoalonzo-api/1.0.0'
+components:
+  schemas:
+    message:
+      type: object
+      required:
+        - destination
+        - body
+      properties:
+        destination:
+          type: string
+          example: Johny222
+        body:
+          type: string
+          example: Hello from Johny
