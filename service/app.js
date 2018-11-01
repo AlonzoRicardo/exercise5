@@ -25,14 +25,14 @@ const limiter = rateLimit({
 
 
 app.use(limiter);
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ limit: '1mb',extended: false }))
+app.use(bodyParser.json({ limit: '1mb' }))
 
 
 //routing
-//const getMessages = require('./routes/getMessages');
+const getMessages = require('./routes/getMessages');
 const postMessage = require('./routes/postMessage')
-//app.use('/', getMessages);
+app.use('/messages', getMessages);
 app.use('/message', postMessage)
 
 

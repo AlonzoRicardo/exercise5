@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const customValidator = require('../customValidator')
 const axios = require('axios');
 const Message = require('../models/MessageModel')
+const MessageStruct = require('./contract')
 
-router.post('/', customValidator(), (req, res) => {
+router.post('/', (req, res) => {
     let { destination, body } = req.body
 
-    //check for file size in header instead of length
-    if (destination.length < 100 && body.length < 100) {
-        axios.post('http://localhost:3000/message', { destination, body })
+    try {
+
+        MessageStruct({ destination, body })
+        
+        axios.post('http://messageapp:3000/message', { destination, body })
             .then(() => {
                 new Message({
                     destination,
@@ -24,9 +26,11 @@ router.post('/', customValidator(), (req, res) => {
             .catch((err) => {
                 res.status(500).send('error');
             })
-    } else {
-        res.send('Error body is too long')
+    } catch (e) {
+        throw e
     }
+
+
 })
 
 module.exports = router;
