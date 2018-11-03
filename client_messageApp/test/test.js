@@ -1,8 +1,9 @@
-const messageClient = require('../message-client')
+const Service = require('../message-client')
+const messageClient = new Service();
 const assert = require('chai').assert;
 const request = require("request");
 const expect = require("chai").expect;
-const baseUrl = "http://localhost:9003";
+const baseUrl = "http://localhost:9003/api/v3";
 
 describe('Client', () => {
 
@@ -33,19 +34,22 @@ describe('API end point', function () {
     it('All tests pass', function (done) {
         request.get({ url: baseUrl + '/messages' },
             function (error, response, body) {
-                let bodyObj = JSON.parse(body);
-
+                let bodyObj =  {
+                    ok: true,
+                    message: JSON.parse(body)
+                  }
+                
                 describe('/messages', () => {
                     it('should return an array', () => {
-                        assert.typeOf(bodyObj, 'array');
+                        assert.typeOf(bodyObj.message, 'array');
                     })
 
                     it("messages length should be 3", () => {
-                        assert.equal(bodyObj.length, 3)
+                        assert.equal(bodyObj.message.length, 3)
                     })
 
-                    it("messages should be of type object", () => {
-                        assert.typeOf(bodyObj[0], 'object')
+                    it("should return object", () => {
+                        assert.typeOf(bodyObj, 'object')
                     })
 
                     it('response status should be 200', () => {

@@ -1,0 +1,19 @@
+4. env variables
+
+ npm i js-queue
+ 
+ var Queue=require('js-queue');
+    //create a new queue instance
+    var queue=new Queue;
+ 
+    for(var i=0; i<50; i++){
+        //add a bunch of stuff to the queue
+        queue.add(makeRequest);
+    }
+ 
+    function makeRequest(){
+        //do stuff
+        console.log('making some request');
+ 
+        this.next();
+    }

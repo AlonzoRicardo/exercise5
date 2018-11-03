@@ -1,22 +1,53 @@
 const axios = require('axios')
+const debug = require('debug')('express:client:')
+const uuidv1 = require('uuid/v1');
 
 class Service {
   constructor() {
     this.service = axios.create({
-      baseURL: `http://localhost:9003`
+      baseURL: `http://localhost:9003/api/v3`,
+      timeout: 3000
     });
   }
 
-  sendMessage (destination, body)  {
-    return this.service.post('/message', { destination, body })
-      .then(response => response.data)
+  sendMessage(destination, body) {
+    let uuid = uuidv1();
+    return this.service.post('/messages', { destination, body, uuid })
+      .then(response => {
+        debug("ok", response);
+        return {
+          ok: true,
+          message: response.data
+        };
+      })
+      .catch(error => {
+        debug("error", error);
+        return {
+          ok: false,
+          message: error.message
+        };
+      });
   }
 
-  getMessages () {
+  getMessages() {
     return this.service.get('/messages')
-      .then(response => response.data)
+      .then(response => {
+        debug("ok", response);
+        return {
+          ok: true,
+          message: response.data
+        };
+      })
+      .catch(error => {
+        debug("error", error);
+        return {
+          ok: false,
+          message: error.message
+        };
+      });
   }
 }
 
-const messageClient = new Service();
-module.exports = messageClient;
+
+
+module.exports = Service;

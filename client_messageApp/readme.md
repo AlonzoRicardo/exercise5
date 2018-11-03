@@ -30,5 +30,3 @@ Simple Client
                     __v: 0 } ] 
             -->
 
-Test in swagger:
-    https://app.swaggerhub.com/apis-docs/rickalon/ricardoalonzo-api/1.0.0-oas3#/default/sendMessage

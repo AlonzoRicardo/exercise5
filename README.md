@@ -42,6 +42,6 @@ Debemos asegurarnos de que el comportamiento es correcto en todos los posibles e
 - Si el proveedor externo nos da un error en el envío del mensaje, deber aparecer como no enviado en el registro
 - Si el proveedor externo ha dado timeout, debe aparecer como enviado y no confirmado en el registro
 
-¿Qué pasa si se envía si la base de datos da un error?
+¿Qué pasa si se envía y la base de datos da un error?
 ¿Es igual de importante el error en el envío de un mensaje o en la consulta del registro?
 Pensar cómo gestionar los errores en cada caso para garantizar la consistencia en los datos de acuerdo al contrato del registro.
