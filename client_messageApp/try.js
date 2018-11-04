@@ -9,7 +9,10 @@ messageClient.addCredits(50)
 let i = 0;
 let interval = () => {
     setInterval(() => {
-        i < 3 ? clearInterval(this) : i++
+        i === 20 ? 
+        messageClient.addCredits(50)
+        .then(response => console.log(response))
+        : i++
 
         messageClient.sendMessage('inya', 'yohaus').then(res => console.log(res))
             .then(() => messageClient.getMessages().then(res => {
