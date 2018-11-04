@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Message = require('../models/MessageModel')
+const MessageModel = require('../models/MessageModel')
 
 router.get('/', (req, res) => {
 
-    Message.find({})
+    MessageModel.find({})
         //.limit(5)
         .then(response => res.send(response))
         

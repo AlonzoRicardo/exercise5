@@ -7,7 +7,7 @@ mongoose.set('useFindAndModify', false);
 const rateLimit = require("express-rate-limit");
 const debug = require('debug')('express:')
 
-const { DBURL } = process.env;
+const { DBURL, LOCALDB } = process.env;
 mongoose.Promise = Promise;
 
 const dbConnection = () => {
@@ -24,7 +24,7 @@ dbConnection()
 const app = express()
 const limiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 100 // limit each IP to 10 requests per windowMs
+  max: 100 // limit each IP to 100
 });
 
 
@@ -34,8 +34,10 @@ app.use(bodyParser.json({ limit: '1mb' }))
 
 
 //routing
+const credits = require('./routes/credits')
 const getMessages = require('./routes/getMessages');
 const postMessage = require('./routes/postMessage')
+app.use('/api/v3/credits', credits);
 app.use('/api/v3/messages', getMessages);
 app.use('/api/v3/messages', postMessage)
 

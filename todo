@@ -1,3 +1,4 @@
+1. fix request limit to be more precise, instead of being ip-directed could be mac directed
 4. env variables
 
  npm i js-queue

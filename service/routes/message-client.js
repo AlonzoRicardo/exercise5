@@ -48,7 +48,7 @@ class Service {
   };
 
   addCredits(amount) {
-    return this.service.post('/credits', {amount})
+    return this.service.post('credits', {amount})
       .then(response => {
         debug("ok", response);
         return {

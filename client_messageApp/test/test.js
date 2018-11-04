@@ -1,8 +1,8 @@
 const Service = require('../message-client')
 const messageClient = new Service();
 const assert = require('chai').assert;
-const request = require("request");
 const expect = require("chai").expect;
+const request = require("request");
 const baseUrl = "http://localhost:9003/api/v3";
 
 describe('Client', () => {
@@ -26,6 +26,16 @@ describe('Client', () => {
 
         it('should receive 2 parameters', () => {
             assert.equal(messageClient.sendMessage.length, 2)
+        })
+    })
+
+    describe('addCredits', () => {
+        it('should be of type function', () => {
+            assert.typeOf(messageClient.addCredits, 'function')
+        })
+
+        it('should receive 1 parameters', () => {
+            assert.equal(messageClient.addCredits.length, 1)
         })
     })
 })
