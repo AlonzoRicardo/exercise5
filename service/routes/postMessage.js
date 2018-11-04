@@ -21,42 +21,46 @@ router.post('/', (req, res) => {
         //MessageStruct will returned detailed information if the fields provided are not properly formated.
         MessageStruct({ destination, body, uuid, status })
 
-        CreditModel.findOne({"GC": 1}).then((response) => {globalCredit = response.amount})
-        
-        globalCredit < 5 && res.send('Insuficient credits')
+        CreditModel.findOne({ "GC": 1 }).then((response) => {
+            globalCredit = response.amount
 
-        let newMsg = new MessageModel({
-            destination,
-            body,
-            uuid,
-            status
+            if (globalCredit < 5) {
+                res.status(403).send('Insuficient credits')
+            } else {
+                let newMsg = new MessageModel({
+                    destination,
+                    body,
+                    uuid,
+                    status
+                })
+
+                newMsg.save()
+                    .then(savedMsg => savedMsg)
+                    .catch(err => err.message)
+
+                axios({
+                    method: 'post',
+                    url: 'http://messageapp:3000/message',
+                    timeout: 3000,
+                    data: { destination, body, uuid, status }
+                })
+                    .then(() => {
+                        MessageModel.findOneAndUpdate({ uuid }, { $set: { "status": { "sent": true, "confirmed": true } } })
+                            .then(() => CreditModel.findOneAndUpdate({}, { $inc: { "amount": -5 } }))
+                        res.status(200).send('Succesful')
+                    })
+                    .catch((err) => {
+                        err.message == 'timeout of 3000ms exceeded'
+                            &&
+                            MessageModel.findOneAndUpdate({ uuid }, { $set: { "status": { "sent": true, "confirmed": false } } })
+                                .then(() => CreditModel.findOneAndUpdate({}, { $inc: { "amount": -5 } }))
+
+                        res.status(500).send(err.message)
+                    })
+            }
         })
 
-        newMsg.save()
-            .then(savedMsg => savedMsg)
-            .catch(err => err.message)
-
-        axios({
-            method: 'post',
-            url: 'http://messageapp:3000/message',
-            timeout: 3000,
-            data: { destination, body, uuid, status }
-        })
-            .then(() => {
-                MessageModel.findOneAndUpdate({ uuid }, { $set: { "status": { "sent": true, "confirmed": true } } })
-                    .then(() => CreditModel.findOneAndUpdate({}, { $inc: { "amount": -5 } }))
-                res.status(200).send('Succesful')
-            })
-            .catch((err) => {
-                err.message == 'timeout of 3000ms exceeded'
-                    &&
-                    MessageModel.findOneAndUpdate({ uuid }, { $set: { "status": { "sent": true, "confirmed": false } } })
-                        .then(() => CreditModel.findOneAndUpdate({}, { $inc: { "amount": -5 } }))
-
-                res.status(500).send(err.message)
-            })
-
-    } catch(e){
+    } catch (e) {
         throw e
     }
 })

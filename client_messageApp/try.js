@@ -3,13 +3,24 @@ const messageClient = new Service();
 
 /* messageClient.addCredits(100)
     .then(response => console.log(response)) */
+messageClient.addCredits(50)
+    .then(response => console.log(response))
 
-messageClient.sendMessage('inya', 'yohaus').then(res => console.log(res))
-    .then(() => messageClient.getMessages().then(res => {
+let i = 0;
+let interval = () => {
+    setInterval(() => {
+        i < 3 ? clearInterval(this) : i++
 
-        console.log(res.message.splice((res.message.length - 5), 5), 'SPLICE HERE');
+        messageClient.sendMessage('inya', 'yohaus').then(res => console.log(res))
+            .then(() => messageClient.getMessages().then(res => {
 
-    messageClient.addCredits(0)
-    .then(response => console.log(response)) 
-}))
+                console.log(res.message.splice((res.message.length - 3), 3), 'SPLICE HERE');
+
+                messageClient.addCredits(0)
+                    .then(response => console.log(response))
+            }))
+    }, 800)
+}
+
+interval()
 
