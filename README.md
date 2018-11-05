@@ -1,46 +1,27 @@
-# Ejercicio 4
+# Ejercicio 5
 
-A pesar del sistema de registro de mensajes, los costes de envío de mensajes son muy altos y queremos limitar dichos costes.
+## Introducción
 
-Para ello, queremos implementar una nueva funcionalidad que consiste en que el servicio tenga, inicialmente un _crédito_ de mensajes,
-y una vez consumido el crédito, empiece a devolver errores.
+La disponibilidad de un servicio es una medida del porcentaje de tiempo que está funcionando y accesible a los usuarios. Todos los servicios son vulnerables ante problemas de infraestructura, un servidor puede caerse, el disco duro llenarse, etc. Y todos estos problemas impactan directamente en la disponibilidad de nuestro servicio.
 
-Esta funcionalidad se implementará, de nuevo, ampliando el API que ofrece nuestro servicio.
+Queremos garantizar la disponibilidad de servicio ante fallos en la base de datos. Para ello vamos a crear una nueva instancia de la base de datos, e implementar diferentes modelos de replicación entre los dos nodos.
 
-## 1. Almacenar el crédito
+### 1 - Crear una base de datos de réplica.
 
-- Ampliar el modelo de datos para tener un _crédito_ global.
+- Define una nueva instancia de Mongo. Usaremos esta base de datos como réplica de la principal, pero vamos a implementar los modelos de replicación nosotros mismos.
 
-## 2. Pagar por cada mensaje
+### 2 - Replicación de la base de datos.
 
-- El endpoint `/message` de tipo POST debe, ahora, comprobar que hay crédito suficiente para poder enviar el mensaje.
-- En caso afirmativo, debe enviar el mensaje y, si se envía correctamente, decrementar el _crédito_ restante.
-- En caso negativo, se devuelve un mensaje de error indicando que no hay crédito suficiente.
+La naturaleza de nuestros datos hace que su modelo de replicación no tenga que ser el mismo necesariamente:
 
-## 3. Recargar el crédito.
+- La base de datos de crédito es crítica, no podemos basarnos en información desactualizada a la hora de realizar pagos. Implementa un modelo de replicación que nos garantice una consistencia muy fuerte en los datos. Esto significa que los contenidos de la base principal y los de la réplica deben estar alineados en todo momento. ¿Qué modificaciones son necesarias en las operaciones de escritura?
+- El registro de mensajes no exige una consistencia tan fuerte. Implementa un modelo que sea eventualmente consistente. Este modelo no es tan estricto como el anterior. ¿Cómo se ejecutarán las operaciones de escritura?
 
-De poco sirve un servicio que una vez agotado el crédito deja de funcionar, necesitamos poder incrementar el crédito existente.
-Para ello, debemos ofrecer un método nuevo en el API para meter crédito:
+### 3 - ¿Son fiables nuestros modelos de replicación?
 
-- El endpoint será `/credit`
-- El método será de tipo POST
-- El contenido de la petición será en formato JSON y contendrá un único campo, `amount`, de tipo entero.
-  Por ejemplo:
-```json
-{
-  "amount": 10
-}
-```
+Una vez implementados nuestro modelos de replicación, tenemos que garantizar que funcionan correctamente:
 
-## 4. ¿Tenemos un sistema de crédito robusto?
-
-Una vez más, nos surge la duda de cómo de robusto es el servicio que hemos montado.
-No queremos que se envíen mensajes si no tenemos crédito, ni queremos que no se pueda ampliar el crédito, pero sobre todo, no queremos que haya inconsistencias entre el crédito que hemos añadido al servicio, el consumo que hemos hecho del dicho crédito, y el crédito restante... es decir, no podemos permitirnos que el dinero aparezca o desaparezca.
-
-Para ello, algunas de las cuestiones que hay que revisar y validar que funcionan correctamente son:
-- Si hay 2 envíos de mensajes concurrentes, el crédito ha de decrementarse correctamente
-- Si se envía un mensaje mientras se recibe una recarga, el crédito final ha de ser consistente
-- Si existe crédito y el envío del mensaje falla, el crédito ha de restaurarse correctamente, incluso aunque haya otros envíos concurrentes
-- Si existe crédito y el proveedor externo ha dado timeout, hay que definir un comportamiento consistente para el crédito en este caso (p. ej. consumir el crédito para evitar sobrecostes y luego revisar el que no se haya consumido realmente y recargarlo).
-
-Dado que tenemos una única instancia del servicio, todas estas cuestiones pueden resolverse mediante locks.
+- ¿Nuestro servicio sigue disponible si el nodo principal de la BBDD deja de funcionar? Para el nodo y compruébalo.
+- ¿Los datos en el nodo secundario son consistentes con los del principal? Es importante comprobar que los datos de crédito son consistentes, no podemos utilizar información antigua para pagar nuevos envíos.
+- Cuando el nodo principal vuelva a ser funcional se encontrará desactualizado. En este escenario, el nodo secundario pasará a ser el principal, y el nuevo secundario necesitará actualizar su contenido (el servicio siguió funcionando en su ausencia).
+- Piensa en este y otros escenarios de indisponibilidad de nodos en la BBDD.
