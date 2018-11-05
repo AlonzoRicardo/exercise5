@@ -1,5 +1,5 @@
 const axios = require('axios')
-const debug = require('debug')('express:client:')
+//const debug = require('debug')('express:client:')
 const uuidv1 = require('uuid/v1');
 
 class Service {
@@ -14,14 +14,14 @@ class Service {
     let uuid = uuidv1();
     return this.service.post('/messages', { destination, body, uuid })
       .then(response => {
-        debug("ok", response);
+        console.log("ok", response.data);
         return {
           ok: true,
           message: response.data
         };
       })
       .catch(error => {
-        debug("error", error);
+        console.log("error", error.message);
         return {
           ok: false,
           message: error.message
@@ -32,14 +32,12 @@ class Service {
   getMessages() {
     return this.service.get('/messages')
       .then(response => {
-        debug("ok", response);
         return {
           ok: true,
           message: response.data
         };
       })
       .catch(error => {
-        debug("error", error);
         return {
           ok: false,
           message: error.message
@@ -50,14 +48,14 @@ class Service {
   addCredits(amount) {
     return this.service.post('/credits', {amount})
       .then(response => {
-        debug("ok", response);
+        console.log("ok", response.data);
         return {
           ok: true,
           message: response.data
         };
       })
       .catch(error => {
-        debug("error", error);
+        console.log("error", error.message);
         return {
           ok: false,
           message: error.message

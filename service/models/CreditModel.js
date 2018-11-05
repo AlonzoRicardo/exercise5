@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const creditSchema = new Schema({
-  GC: { type: Number, default: 1 },
   amount: { type: Number, default: 10 }
 }, {
     timestamps: {

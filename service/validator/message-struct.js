@@ -8,6 +8,12 @@ const MessageStruct = struct({
         sent: 'boolean?',
         confirmed: 'boolean?'
     }
-})
+},
+    {
+        status: {
+            sent: false,
+            confirmed: false
+        }
+    })
 
 module.exports = MessageStruct;

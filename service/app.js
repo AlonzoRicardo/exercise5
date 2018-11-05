@@ -5,7 +5,6 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
 const rateLimit = require("express-rate-limit");
-const debug = require('debug')('express:')
 
 const { DBURL, LOCALDB } = process.env;
 mongoose.Promise = Promise;
@@ -13,10 +12,10 @@ mongoose.Promise = Promise;
 const dbConnection = () => {
   mongoose.connect(process.env.DBURL, { useNewUrlParser: true })
     .then(() => {
-      debug(`Connected to Mongo on ${DBURL}`)
+      console.log(`Connected to Mongo on ${DBURL}`)
     }).catch(err => {
       dbConnection();
-      debug('Error connecting to mongo, retrying', err)
+      console.log('Error connecting to mongo, retrying', err)
     });
 }
 dbConnection()
@@ -35,10 +34,8 @@ app.use(bodyParser.json({ limit: '1mb' }))
 
 //routing
 const credits = require('./routes/credits')
-const getMessages = require('./routes/getMessages');
-const postMessage = require('./routes/postMessage')
+const postMessage = require('./routes/MessagesRoute')
 app.use('/api/v3/credits', credits);
-app.use('/api/v3/messages', getMessages);
 app.use('/api/v3/messages', postMessage)
 
 
