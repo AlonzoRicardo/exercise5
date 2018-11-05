@@ -1,5 +1,6 @@
 1. fix request limit to be more precise, instead of being ip-directed could be mac directed
 2  Encountered problem when charging credits when consecutive requests are made.
+3. dont work on master
 
 4. env variables
 

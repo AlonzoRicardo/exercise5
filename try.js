@@ -1,4 +1,4 @@
-const Service = require('./message-client')
+const Service = require('./client_messageApp/message-client')
 const messageClient = new Service();
 
 /* messageClient.addCredits(100)
