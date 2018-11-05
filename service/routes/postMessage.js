@@ -5,9 +5,6 @@ const MessageModel = require('../models/MessageModel');
 const MessageStruct = require('../validator/message-struct');
 const CreditModel = require('../models/CreditModel');
 
-/* const Service = require('./message-client');
-const messageClient = new Service(); */
-
 router.post('/', (req, res) => {
     let { destination, body, uuid } = req.body;
     let status = {
