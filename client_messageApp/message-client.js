@@ -1,17 +1,18 @@
-const axios = require('axios')
+const axios = require("axios");
 //const debug = require('debug')('express:client:')
-const uuidv1 = require('uuid/v1');
+const uuidv1 = require("uuid/v1");
 
 class Service {
   constructor() {
     this.service = axios.create({
       baseURL: `http://localhost:9003/api/v3`
     });
-  };
+  }
 
   sendMessage(destination, body) {
     let uuid = uuidv1();
-    return this.service.post('/messages', { destination, body, uuid })
+    return this.service
+      .post("/messages", { destination, body, uuid })
       .then(response => {
         console.log(response.data);
         return {
@@ -26,10 +27,11 @@ class Service {
           message: error.message
         };
       });
-  };
+  }
 
   getMessages() {
-    return this.service.get('/messages')
+    return this.service
+      .get("/messages")
       .then(response => {
         return {
           ok: true,
@@ -42,10 +44,11 @@ class Service {
           message: error.message
         };
       });
-  };
+  }
 
   addCredits(amount) {
-    return this.service.post('/credits', {amount})
+    return this.service
+      .post("/credits", { amount })
       .then(response => {
         console.log(response.data);
         return {
@@ -60,9 +63,7 @@ class Service {
           message: error.message
         };
       });
-  };
-};
-
-
+  }
+}
 
 module.exports = Service;

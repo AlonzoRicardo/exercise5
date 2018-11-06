@@ -54,7 +54,7 @@ class ServiceController {
     }
   }
 
-  //CHARGE
+  //CHARGES
   charge() {
     if (hierarchy.length > 1) {
       console.log("enter 2 db");
@@ -85,7 +85,7 @@ class ServiceController {
       });
   }
 
-  //ADD BALANCE
+  //ADDS BALANCE
   addCredits(req) {
     const { amount } = req.body;
     CreditStruct({ amount });
