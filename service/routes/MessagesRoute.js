@@ -24,7 +24,7 @@ router.post('/messages', (req, res) => {
                 ServiceHandler.saveMessage(destination, body, uuid)
                 .then(() => {
                     ServiceHandler.sendMessage(destination, body, uuid, res)
-                })   
+                })
             }
         })
     })
