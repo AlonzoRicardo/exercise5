@@ -5,6 +5,11 @@ const db1 = connect(DBURL);
 const db2 = connect(DBURL2);
 let hierarchy = [];
 
+let degradeDbHierarchy = (db, arr) => {
+  let pos = arr.indexOf(db);
+  arr.splice(pos, 1);
+};
+
 const CreditModel = database => {
   return require("../models/CreditModel")(database);
 };
@@ -33,15 +38,14 @@ db2.on("reconnected", () => {
 });
 
 db1.on("disconnected", () => {
-  let pos = hierarchy.indexOf(db1);
-  hierarchy.splice(pos, 1);
+  degradeDbHierarchy(db1, hierarchy);
   console.log(hierarchy.length, "DATABASE-1 DOWN");
 });
 
 db2.on("disconnected", () => {
-  let pos = hierarchy.indexOf(db2);
-  hierarchy.splice(pos, 1);
+  degradeDbHierarchy(db2, hierarchy);
   console.log(hierarchy.length, "DATABASE-2 DOWN");
 });
 
 module.exports = { hierarchy };
+module.exports = degradeDbHierarchy;
