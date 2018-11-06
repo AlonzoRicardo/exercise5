@@ -12,7 +12,7 @@ const axios = require('axios')
 //configs
 const delay = 5000;
 const { MSGAPP, LOCALHOST } = process.env;
-const { db1, db2, hierarchy } = require('../app');
+const { hierarchy } = require('../app');
 
 function leaderDB(arr) {
   return arr[0];
@@ -33,7 +33,6 @@ class ServiceController {
 
   //SAVES
   saveMessage(destination, body, uuid) {
-    console.log('enters save');
     MessageStruct({ destination, body, uuid })
     if (hierarchy.length > 1) {
       handleSaveToBases(destination, body, uuid, slaveDB(hierarchy), 'db2')
@@ -46,7 +45,6 @@ class ServiceController {
 
   //CHARGE
   charge() {
-    console.log('enter charge');
     if (hierarchy.length > 1) {
       console.log('enter 2 db');
       handleChargeToBases(slaveDB(hierarchy), 'db2')
@@ -60,7 +58,6 @@ class ServiceController {
 
   //SENDS
   sendMessage(destination, body, uuid, res) {
-    console.log('enters send');
     this.service.post('/message', { destination, body, uuid })
       .then(() => {
         this.updateMessageStatus(uuid, true, true)

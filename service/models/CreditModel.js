@@ -13,10 +13,8 @@ const creditSchema = new Schema({
 const Credit = mongoose.model('Credit', creditSchema);
 Credit.collection.drop('Credit');
 
-function initialize() {
-  Credit.create(new Credit({}))
-    .then(() => console.log('DB Initialization'));
-}
+
+
 
 
 module.exports = (database) => database.model('Credit', creditSchema);
