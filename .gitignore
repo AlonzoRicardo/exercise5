@@ -1,5 +1,9 @@
 node_modules
 data
+data2
+.env
+
 .gitignore
 ignore
-.env
+
+test

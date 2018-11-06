@@ -5,8 +5,7 @@ const uuidv1 = require('uuid/v1');
 class Service {
   constructor() {
     this.service = axios.create({
-      baseURL: `http://localhost:9003/api/v3`,
-      timeout: 3000
+      baseURL: `http://localhost:9003/api/v3`
     });
   };
 
@@ -14,7 +13,7 @@ class Service {
     let uuid = uuidv1();
     return this.service.post('/messages', { destination, body, uuid })
       .then(response => {
-        console.log("ok", response.data);
+        console.log(response.data);
         return {
           ok: true,
           message: response.data
@@ -34,7 +33,7 @@ class Service {
       .then(response => {
         return {
           ok: true,
-          message: response.data
+          message: response
         };
       })
       .catch(error => {
@@ -48,7 +47,7 @@ class Service {
   addCredits(amount) {
     return this.service.post('/credits', {amount})
       .then(response => {
-        console.log("ok", response.data);
+        console.log(response.data);
         return {
           ok: true,
           message: response.data

@@ -17,3 +17,9 @@ services:
       - ./data/db:/data/db
     ports:
       - 27018:27017
+  mongodb-2:
+    image: mongo
+    volumes:
+      - ./data2/db2:/data/db
+    ports:
+      - 27019:27017

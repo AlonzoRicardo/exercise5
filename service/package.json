@@ -1,12 +1,12 @@
 {
-  "name": "exersice1",
+  "name": "exersice5",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha || true"
   },
-  "author": "",
+  "author": "rick",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
@@ -18,5 +18,9 @@
     "superstruct": "^0.6.0",
     "throttled-queue": "^1.0.5",
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0"
   }
 }
