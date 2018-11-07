@@ -6,7 +6,8 @@ Simple Client
     Methods:
         1. sendMessage(destination, body) // takes 2 arguments, both string types;
         2. getMessages() // retreives all messages from db;
-
+        3. addCredits() // adds the number given to the total the global credits;
+        
     Examples: 
         1. send a message:
             messageClient.sendMessage('hello', 'world');
@@ -29,4 +30,13 @@ Simple Client
                     updated_at: '2018-11-01T10:35:10.166Z',
                     __v: 0 } ] 
             -->
+
+        3. add credits:
+            messageClient.addCredits(5);
+            if the current global credits is 0;
+            //returns
+            {
+                amount: 5;
+            }
+
 

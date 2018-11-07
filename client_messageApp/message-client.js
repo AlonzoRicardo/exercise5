@@ -1,5 +1,4 @@
 const axios = require("axios");
-//const debug = require('debug')('express:client:')
 const uuidv1 = require("uuid/v1");
 
 class Service {
