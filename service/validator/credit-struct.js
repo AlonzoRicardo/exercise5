@@ -1,7 +1,7 @@
-const struct = require('superstruct').struct
+const struct = require("superstruct").struct;
 
 const CreditStruct = struct({
-    amount: 'number'
-})
+  amount: "number"
+});
 
 module.exports = CreditStruct;

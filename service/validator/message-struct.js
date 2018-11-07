@@ -1,19 +1,21 @@
-const struct = require('superstruct').struct
+const struct = require("superstruct").struct;
 
-const MessageStruct = struct({
-    destination: 'string',
-    body: 'string',
-    uuid: 'string',
+const MessageStruct = struct(
+  {
+    destination: "string",
+    body: "string",
+    uuid: "string",
     status: {
-        sent: 'boolean?',
-        confirmed: 'boolean?'
+      sent: "boolean?",
+      confirmed: "boolean?"
     }
-},
-    {
-        status: {
-            sent: false,
-            confirmed: false
-        }
-    })
+  },
+  {
+    status: {
+      sent: false,
+      confirmed: false
+    }
+  }
+);
 
 module.exports = MessageStruct;
